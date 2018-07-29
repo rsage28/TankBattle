@@ -76,3 +76,6 @@ DerivedDataCache/*
 
 StarterContent/
 Content/Heightmap.umap
+
+WindowsNoEditor/
+
