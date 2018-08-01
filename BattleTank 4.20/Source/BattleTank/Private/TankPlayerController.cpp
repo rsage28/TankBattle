@@ -36,5 +36,39 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
 
 	auto ScreenLocation = FVector2D(ViewportSizeX * CrossHairXLocation, ViewportSizeY * CrossHairYLocation);
+	FVector WorldDirection;
+	if (GetLookDirection(ScreenLocation, WorldDirection)) {
+		FVector HitLocation;
+		GetLookVectorHitLocation(HitLocation, WorldDirection);
+	}
 	return true;
+}
+
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const {
+	FVector CameraWorldLocation;
+	return DeprojectScreenPositionToWorld(
+		ScreenLocation.X, 
+		ScreenLocation.Y, 
+		CameraWorldLocation, 
+		LookDirection
+	);
+}
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector& HitLocation, FVector LookDirection) const {
+	FHitResult Hit;
+	auto StartLocation = PlayerCameraManager->GetCameraLocation();
+	auto EndLocation = StartLocation + (LookDirection * LineTraceRange);
+	bool LineTraceDidHit = GetWorld()->LineTraceSingleByChannel(
+		Hit,
+		StartLocation,
+		EndLocation,
+		ECC_Visibility
+	);
+	if (LineTraceDidHit) {
+		HitLocation = Hit.Location;
+	}
+	else {
+		HitLocation = FVector(0.0f);
+	}
+	return LineTraceDidHit;
 }
