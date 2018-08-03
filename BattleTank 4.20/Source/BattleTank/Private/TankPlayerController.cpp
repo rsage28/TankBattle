@@ -23,11 +23,12 @@ void ATankPlayerController::Tick(float DeltaTime) {
 }
 
 void ATankPlayerController::AimTowardsCrosshair() {
-	if (!GetControlledTank()) { return; }
+	auto Tank = GetControlledTank();
+	if (!Tank) { return; }
 
 	FVector HitLocation;
 	if (GetSightRayHitLocation(HitLocation)) {
-
+		Tank->AimAt(HitLocation);
 	}
 }
 
@@ -38,10 +39,12 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	auto ScreenLocation = FVector2D(ViewportSizeX * CrossHairXLocation, ViewportSizeY * CrossHairYLocation);
 	FVector WorldDirection;
 	if (GetLookDirection(ScreenLocation, WorldDirection)) {
-		FVector HitLocation;
-		GetLookVectorHitLocation(HitLocation, WorldDirection);
+		GetLookVectorHitLocation(OutHitLocation, WorldDirection);
+		return true;
 	}
-	return true;
+	else {
+		return false;
+	}	
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const {

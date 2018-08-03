@@ -12,6 +12,16 @@ ATank* ATankAIController::GetPlayerTank() const {
 	return Cast<ATank>(PlayerTank);
 }
 
+void ATankAIController::Tick(float DeltaTime) {
+	Super::Tick(DeltaTime);
+	auto MyTank = GetControlledTank();
+	auto PlayerTank = GetPlayerTank();
+
+	if (MyTank && PlayerTank) {
+		MyTank->AimAt(PlayerTank->GetActorLocation());
+	}
+}
+
 void ATankAIController::BeginPlay() {
 	Super::BeginPlay();
 	auto possessed = GetControlledTank();
@@ -30,6 +40,3 @@ void ATankAIController::BeginPlay() {
 		UE_LOG(LogTemp, Warning, TEXT("Player possessing: %s"), *(player->GetName()));
 	}
 }
-
-
-
