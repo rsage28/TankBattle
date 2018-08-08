@@ -4,13 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Components/StaticMeshComponent.h"
-#include "Engine/World.h"
 #include "TankBarrel.generated.h"
 
 /**
  * 
  */
-UCLASS(meta = (BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankBarrel : public UStaticMeshComponent
 {
 	GENERATED_BODY()
@@ -18,10 +17,9 @@ class BATTLETANK_API UTankBarrel : public UStaticMeshComponent
 public:
 	// -1 is max down speed, +1 is max up speed
 	void Elevate(float RelativeSpeed);	
-	
-private:
+
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
-	float MaxDegreesPerSecond = 10;
+	float MaxDegreesPerSecond = 10; // make any of these variables private to reproduce bug
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	float MaxElevationDegrees = 40;
 	UPROPERTY(EditDefaultsOnly, Category = Setup)

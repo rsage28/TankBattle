@@ -4,13 +4,12 @@
 
 #include "CoreMinimal.h"
 #include "Components/StaticMeshComponent.h"
-#include "Engine/World.h"
 #include "TankTurret.generated.h"
 
 /**
  * 
  */
-UCLASS(meta = (BlueprintSpawnableComponent))
+UCLASS(Blueprintable, BlueprintType, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class BATTLETANK_API UTankTurret : public UStaticMeshComponent
 {
 	GENERATED_BODY()
@@ -19,7 +18,6 @@ public:
 	// -1 is max down speed, +1 is max up speed
 	void Rotate(float RelativeSpeed);
 
-private:
 	UPROPERTY(EditDefaultsOnly, Category = Setup)
-	float MaxDegreesPerSecond = 25;
+	float MaxDegreesPerSecond = 25;	// make this variable private to reproduce bug
 };
